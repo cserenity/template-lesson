@@ -1,0 +1,73 @@
+/* Colors and spacing are not exactly pretty at the moment, I have not decided on a color palate
+and I am still trying to figure out spacing issues*/
+
+body {
+  padding: 20px 10px;
+  font-family: Helvetica; 
+  max-width: 2000px;
+  margin: 0 auto; /* top and bottom margins, auto is automatic.  realize this is a similar note to
+  the example, but wanted to remember this*/
+  font-size: 1.4em;
+  }   /*sets left and right margins to equal values, centers the body on the page. realize this is a similar note to
+  the example, but wanted to remember this, don't change this!  It messes up your text. */
+
+ h1 {
+   text-align: center;
+   color: #008080;
+ } 
+
+p {
+  margin: 10px 0;
+  line-height: 2.0;
+}
+
+ul {
+  list-style-type: none; /*removes default bullets in unordered lists*/
+}
+
+li {
+  font-size: 20px;
+  line-height: 44px; /* each line of text should occupy 44 pixels of height (good for mobile usage and fat fingers) again, notes to remember from example */
+}
+
+/*CSS lines starting with a . signify the CSS rules will apply to all sections with the same class name*/
+
+
+.lesson {
+  border-radius: 20px;
+  font-size: 30px;
+  color: #008080;
+  background-color:  #afeeee;
+  padding: 10px;
+}
+
+h2 {
+  margin: 10px;
+}
+
+.concept {
+  padding: 4px;
+  margin: 10px;
+  border-radius: 4px;
+  line-height: 1.0;
+  font-size: 22px;
+  font-weight: bold;
+  color: #ff6347;
+}
+
+.concept-brief {
+  font-size: 20px;
+  font-weight: bold;
+  font-style: italic;
+  color: #a0522d;
+  margin: 10px;
+}
+
+.concept-description {
+  font-size: 18px;
+  margin: 6px;
+}
+
+.concept-list {
+  font-size: 18px;
+}
