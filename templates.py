@@ -54,26 +54,19 @@ class MainPage(Handler):
 		
 
 
-class Guestbook(webapp2.RequestHandler):
+
+class Guestbook(Handler):#  added try 5
     def get(self):
-    	#check for blank entry, maybe this works? it's a base
-    	#blank_entry = self.request.get('') this is me guessing
-    	#check for error message, this is from webcast, does it go here or under
-    	#get on main?pretty sure here???
-    	#error = self.request.get('error','')
-    	#to test
-    	#print '#####'
-    	#print error
-    	#print '#####'
-        guestbook_name = self.request.get('guestbook_name',
+    	
+    	error = self.request.get('no_text')
+
+    	guestbook_name = self.request.get('guestbook_name',
                                           DEFAULT_GUESTBOOK_NAME)
         greetings_query = Greeting.query(
             ancestor=guestbook_key(guestbook_name)).order(-Greeting.date)
-        posts_to_pull = 10 #added to fix magic number
+        posts_to_pull = 10 
         greetings = greetings_query.fetch(posts_to_pull)
-        #greetings = greetings_query.fetch(10) 10 is a magic no no
         
-        #self.render('index.html') from andy example hanlers line 59
 
 
         user = users.get_current_user()
@@ -90,17 +83,18 @@ class Guestbook(webapp2.RequestHandler):
             'guestbook_name': urllib.quote_plus(guestbook_name),
             'url': url,
             'url_linktext': url_linktext,
+            'no_text': error#added
         }
 
-        template = jinja_env.get_template('index.html')#this is where error generated?or base?
-        #from webcast
-        #rendered_html = ('index.html') % (table,error) don't think this is necessary since using template
-        self.response.write(template.render(template_values))
-
+        #template = jinja_env.get_template('index.html') #this puts error in url
+        self.render('index.html', **template_values) #add try 5 error still in url
+        #self.response.write(template.render(template_values)) #this puts error in url
+        
 
 
 
     def post(self):
+    	no_text = ""
     	guestbook_name = self.request.get('guestbook_name',
                                           DEFAULT_GUESTBOOK_NAME)
         greeting = Greeting(parent=guestbook_key(guestbook_name))
@@ -111,12 +105,12 @@ class Guestbook(webapp2.RequestHandler):
                     email=users.get_current_user().email())
 
         greeting.content = self.request.get('content')
-        #if greeting.content =="":
-        	#blank_entry ='Oops, are you using an invisibility cloak?'
-        #else:
-        greeting.put()#indent this to blank entry
+        if greeting.content =="":#added
+        	no_text ='Oops, are you using an invisibility cloak?'#added.  do i need a redirect?
+        else:#added
+        	greeting.put()#unindent for fall back
 
-        query_params = {'guestbook_name': guestbook_name}
+        query_params = {'guestbook_name': guestbook_name, 'no_text': no_text}#added no_text
         self.redirect('/?' + urllib.urlencode(query_params))
 
 

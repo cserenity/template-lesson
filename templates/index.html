@@ -18,11 +18,12 @@
     {% endfor %}
 
     
-<!-- %s
-    <br>
-    <span class="error">%s</span> this is from webcast-->
+ 
     <form action="/sign?guestbook_name={{ guestbook_name }}" method="post">
+  
+
       <div><textarea name="content" rows="3" cols="60"></textarea></div>
+      {{ no_text }}<!-- added -->
       <div><input type="submit" value="Sign Guestbook"></div>
     </form>
 
