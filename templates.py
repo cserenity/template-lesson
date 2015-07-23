@@ -56,11 +56,7 @@ class MainPage(Handler):
 
 
 class Guestbook(Handler):#  added try 5
-    #def write_form(self, error="")# pg 13 your notes
-    	 #self.response.out.write(form % {"error": error})#pg18 your notes, does form='index.html'?
-
     def get(self):
-    	#self.write_form()#pg 19
     	
     	error = self.request.get('no_text')
 
@@ -87,20 +83,18 @@ class Guestbook(Handler):#  added try 5
             'guestbook_name': urllib.quote_plus(guestbook_name),
             'url': url,
             'url_linktext': url_linktext,
-        }    
-        
-        #template_values[error] = 'no_text'# dictionary add, not sure this is correct
+            'no_text': error#added
+        }
+
         #template = jinja_env.get_template('index.html') #this puts error in url
         self.render('index.html', **template_values) #add try 5 error still in url
         #self.response.write(template.render(template_values)) #this puts error in url
-        #self.response.out.write("")pg14 your notes
         
 
 
 
     def post(self):
-
-    	no_text = ""# seems after i added this no posts are accepted :(
+    	no_text = ""
     	guestbook_name = self.request.get('guestbook_name',
                                           DEFAULT_GUESTBOOK_NAME)
         greeting = Greeting(parent=guestbook_key(guestbook_name))
@@ -111,27 +105,19 @@ class Guestbook(Handler):#  added try 5
                     email=users.get_current_user().email())
 
         greeting.content = self.request.get('content')
-        
         if greeting.content =="":#added
-        	#self.write_form("Oops, are you using an invisibility cloak?")#this might be right?
-        	#above is from 4.6 substitute into our form 2:37
-        	no_text ='Oops, are you using an invisibility cloak?'#added.  do i need a redirect? broken?
+        	no_text ='Oops, are you using an invisibility cloak?'#added.  do i need a redirect?
         else:#added
-        	greeting.put()#unindent for fall back, if use redirect get rid of this??
-        	#self.response.out.write("Thanks for stopping by!")#message for valid post, no reidrect
-        	self.redirect("/thanks")#notes pg 22, but don't have a thanks handler so may not use
+        	greeting.put()#unindent for fall back
 
         query_params = {'guestbook_name': guestbook_name, 'no_text': no_text}#added no_text
-        self.redirect('/?' + urllib.urlencode(query_params))
+        self.redirect('/sign?' + urllib.urlencode(query_params))
 
-class ThanksHandler(Handler): #if you decide to try the thanks handler/redirect
-	def get(self):
-		self.response.out.write("Thanks for stopping by!")
+
 
 		
 
 app = webapp2.WSGIApplication([('/', MainPage),
-							   ('/sign', Guestbook),
-							   ('/thanks')#built for thanks if you decide to use
+							   ('/sign', Guestbook)
 							   ],
 							   debug=True)
